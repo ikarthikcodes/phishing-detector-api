@@ -93,4 +93,10 @@ Payload:
 | https://steamcommunity-giveaway.my3gb.com/         | Phishing           | 
 | http://tinyurl.com/bsebhuz         | Phishing           | 
 
+## 📸 Screenshots
+
+![Result](screenshots/Screenshot 2026-05-07 030233.jpg)
+![Result](screenshots/Screenshot 2026-05-07 030405.jpg)
+![Result](screenshots/Screenshot 2026-05-07 030448.jpg)
+
 
