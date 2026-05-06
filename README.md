@@ -18,6 +18,7 @@ A machine learning-based Flask web application that detects whether a URL is leg
 - **Backend:** Python, Flask
 - **Machine Learning:** Scikit-learn, Pandas, NumPy
 - **Frontend:** HTML5, CSS3
+- **ML Model:** Random Forest
 
 ---
 
@@ -33,3 +34,63 @@ phishing-detector/
 ├── model.pkl           # Saved ML model (Generated after training)
 ├── templates/          # HTML files for Web UI
 └── data/               # Phishing and Benign datasets
+```
+---
+
+## ⚙️ Installation & Setup
+## 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/yourusername/phishing-detector.git
+cd phishing-detector
+```
+
+## 2️⃣ Set up Virtual Environment
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+## 3️⃣ Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+## 4️⃣ Train the Model (If model.pkl is missing)
+
+```bash
+python train.py
+```
+
+## 5️⃣ Run the Application
+
+```bash
+python app.py
+```
+
+View the app at: [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
+
+## 🌐 API Usage
+Endpoint: POST /predict
+Payload:
+
+```bash
+{
+  "url": "http://example-phish-site.com"
+}
+```
+
+## 📊 Example Results
+
+| URL | Result |
+| :---         | :----         |
+| https://en.wikipedia.org/wiki/Main_Page         | Safe           | 
+| https://www.youtube.com/         | Safe           | 
+| https://gemini.google.com/app         | Safe           | 
+| www.dghjdgf.com/paypal.co.uk/cycgi-bin/webscrcmd=_home-customer&nav=1/loading.php         | Phishing           | 
+| https://steamcommunity-giveaway.my3gb.com/         | Phishing           | 
+| http://tinyurl.com/bsebhuz         | Phishing           | 
+
+
