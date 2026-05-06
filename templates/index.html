@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phishing Detector</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-900 text-white flex items-center justify-center min-h-screen">
+
+<div class="w-full max-w-xl p-6">
+
+    <!-- Card -->
+    <div class="bg-slate-800 rounded-2xl shadow-xl p-6">
+
+        <h1 class="text-2xl font-bold text-center mb-4">
+            🔍  Phishing URL Detector
+        </h1>
+
+        <!-- Input -->
+        <input 
+            id="url"
+            type="text"
+            placeholder="Enter URL (e.g. http://fake-login.com)"
+            class="w-full p-3 rounded-lg text-black"
+        >
+
+        <!-- Button -->
+        <button onclick="check()" 
+            class="w-full mt-3 bg-green-500 hover:bg-green-600 transition p-3 rounded-lg font-semibold">
+            Scan URL
+        </button>
+
+        <!-- Loader -->
+        <div id="loader" class="hidden flex justify-center mt-4">
+            <div class="w-6 h-6 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+
+        <!-- Result -->
+        <div id="result" class="mt-6"></div>
+
+    </div>
+
+</div>
+
+<script>
+async function check() {
+    const url = document.getElementById("url").value;
+    const loader = document.getElementById("loader");
+    const resultDiv = document.getElementById("result");
+
+    resultDiv.innerHTML = "";
+    loader.classList.remove("hidden");
+
+    try {
+        const res = await fetch("/predict", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({url})
+        });
+
+        const data = await res.json();
+
+        loader.classList.add("hidden");
+
+        const isSafe = data.prediction === "safe";
+
+        let color = isSafe ? "text-green-400" : "text-red-400";
+        let badge = isSafe ? "SAFE" : "PHISHING";
+
+        let html = `
+            <div class="text-center mb-4">
+                <h2 class="text-xl font-bold ${color}">${badge}</h2>
+                <p class="text-sm text-gray-400">
+                    Confidence: ${(data.confidence * 100).toFixed(2)}%
+                </p>
+            </div>
+
+            <div class="mt-4">
+                <h3 class="text-sm text-gray-300 mb-2">🔍 Why this prediction?</h3>
+        `;
+
+        // =========================
+        // SHAP EXPLANATIONS
+        // =========================
+        if (data.explanations && data.explanations.length > 0) {
+
+            data.explanations.forEach(item => {
+                const impact = item.impact;
+                const absImpact = Math.abs(impact);
+
+                let barColor = impact > 0 ? "bg-red-500" : "bg-green-500";
+
+                html += `
+                    <div class="mb-2">
+                        <div class="flex justify-between text-xs text-gray-300">
+                            <span>${item.feature}</span>
+                            <span>${impact.toFixed(3)}</span>
+                        </div>
+
+                        <div class="w-full bg-gray-700 rounded h-2">
+                            <div class="${barColor} h-2 rounded" style="width:${Math.min(absImpact * 100, 100)}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+        } else {
+            html += `<p class="text-gray-400 text-sm">No explanation available</p>`;
+        }
+
+        html += `</div>`;
+
+        resultDiv.innerHTML = html;
+
+    } catch (err) {
+        loader.classList.add("hidden");
+        console.error(err);  // 🔥 ADD THIS
+        resultDiv.innerHTML = `<p class="text-red-400">Error occurred</p>`;
+    }
+}
+
+// Enter key support
+document.getElementById("url").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") check();
+});
+</script>
+
+</body>
+</html>
