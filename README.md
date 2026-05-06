@@ -95,8 +95,9 @@ Payload:
 
 ## 📸 Screenshots
 
-![Result](screenshots/Screenshot 2026-05-07 030233.jpg)
-![Result](screenshots/Screenshot 2026-05-07 030405.jpg)
-![Result](screenshots/Screenshot 2026-05-07 030448.jpg)
+<img width="1920" height="1040" alt="Screenshot 2026-05-07 030448" src="https://github.com/user-attachments/assets/dff936fd-b8f0-42b9-9bfd-c0f957babf0e" />
+<img width="1920" height="1040" alt="Screenshot 2026-05-07 030405" src="https://github.com/user-attachments/assets/5ebb0ade-1395-4e8c-ab71-2b4d9cafb1ce" />
+<img width="1920" height="1040" alt="Screenshot 2026-05-07 030233" src="https://github.com/user-attachments/assets/2209f8e8-e233-4867-921c-90e350710b77" />
+
 
 
